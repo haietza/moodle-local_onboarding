@@ -18,6 +18,7 @@
  * Admin settings.
  *
  * @package   local_onboarding
+ * @category  admin
  * @copyright 2023, Michelle Melton <meltonml@appstate.edu>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,7 +27,7 @@ defined('MOODLE_INTERNAL') || die;
 
 // Ensure the configurations for this site are set.
 if ($hassiteconfig) {
-    $settings = new admin_settingpage('local_onboarding', get_string('pluginname', 'local_onboarding'));
+    $settings = new admin_settingpage('local_onboarding_settings', get_string('pluginname', 'local_onboarding'));
     
     if ($ADMIN->fulltree) {
         $settings->add(new admin_setting_confightmleditor('onboarding/welcometeacher', get_string('welcometeacher', 'local_onboarding'),

@@ -15,15 +15,31 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version file
- * 
+ * Event observer.
+ *
  * @package   local_onboarding
  * @copyright 2023, Michelle Melton <meltonml@appstate.edu>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
+require_once($CFG->dirroot . '/local/onboarding/locallib.php');
 
-$plugin->version = 2023033002;
-$plugin->requires = 2022112802;
-$plugin->component = 'local_onboarding';
+/**
+ * Event observer.
+ *
+ * @package   local_onboarding
+ * @copyright 2023, Michelle Melton <meltonml@appstate.edu>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class local_onboarding_observer {
+
+    /**
+     * Handlers for observed events.
+     *
+     * @param object $event
+     */
+    public static function manage_events($event) {
+        new_user_created($event);
+    }
+}
