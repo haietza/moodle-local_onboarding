@@ -15,20 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Lang file.
+ * Scheduled tasks for plugin.
  *
- * @package   local_onboarding
- * @copyright 2023, Michelle Melton <meltonml@appstate.edu>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     local_onboarding
+ * @copyright   2023 Michelle Melton <meltonml@appstate.edu>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Onboarding notifications';
-$string['welcometeacher'] = 'New teacher message';
-$string['welcometeacher_desc'] = 'Enter the content for the message to be sent to new teachers';
-$string['welcomestudent'] = 'New student message';
-$string['welcomestudent_desc'] = 'Enter the content for the message to be sent to new students';
-$string['lowuseteacher'] = 'Low use teacher message';
-$string['lowuseteacher_desc'] = 'Enter the content for the message to be sent to low use teachers';
-$string['getroles'] = 'Get stored user roles';
+$tasks = array(
+    array(
+        'classname' => 'local_onboarding\task\get_user_roles',
+        'blocking' => 0,
+        'minute' => '5',
+        'hour' => '3',
+        'day' => '*',
+        'dayofweek' => '*',
+        'month' => '*'
+    )
+);
