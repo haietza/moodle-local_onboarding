@@ -38,3 +38,26 @@ function new_user_created($event) {
     
     return;
 }
+
+function send_onboarding_message($userid, $message) {
+    global $SITE;
+    
+    $a = new \stdClass();
+    $a->sitename = $SITE->fullname;
+    
+    $messagesubject = get_string('messagesubject', 'local_onboarding', $a);
+    $messagebody = $message;
+
+    $message = new \core\message\message();
+    $message->component = 'local_onboarding';
+    $message->name = 'onboardingmessage';
+    $message->userfrom = core_user::get_noreply_user();
+    $message->userto = $userid;
+    $message->subject = $messagesubject;
+    $message->fullmessage = html_to_text($messagebody);
+    $message->fullmessageformat = FORMAT_HTML;
+    $message->fullmessagehtml = $messagebody;
+    $message->notification = 1;
+
+    $messageid = message_send($message);
+}
