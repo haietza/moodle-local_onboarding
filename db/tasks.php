@@ -35,11 +35,20 @@ $tasks = array(
         'month' => '*'
     ),
     array(
-        'classname' => 'local_onboarding\task\send_onboarding_messages',
+        'classname' => 'local_onboarding\task\send_onboarding_new_messages',
         'blocking' => 0,
         'minute' => '5',
         'hour' => '4',
         'day' => '*',
+        'dayofweek' => '*',
+        'month' => '*'
+    ),
+    array(
+        'classname' => 'local_onboarding\task\get_low_use_teachers',
+        'blocking' => 0,
+        'minute' => '5',
+        'hour' => '4',
+        'day' => '1',
         'dayofweek' => '*',
         'month' => '*'
     )

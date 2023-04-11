@@ -33,14 +33,14 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright   2023 Michelle Melton <meltonml@appstate.edu>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class send_onboarding_messages extends \core\task\scheduled_task {
+class send_onboarding_new_messages extends \core\task\scheduled_task {
     /**
      * Get name of scheduled task.
      * {@inheritDoc}
      * @see \core\task\scheduled_task::get_name()
      */
     public function get_name() {
-        return get_string('sendonboardingmessages', 'local_onboarding');
+        return get_string('sendonboardingnewmessages', 'local_onboarding');
     }
 
     /**
@@ -53,19 +53,29 @@ class send_onboarding_messages extends \core\task\scheduled_task {
         
         $config = get_config('onboarding');
         
-        $newuserswithrole = $DB->get_records_select('local_onboarding', 'roleshortname like "%editingteacher%" OR roleshortname like "%student%" AND type = "new"');
+        $newuserswithrole = $DB->get_records_select('local_onboarding', 'roleshortname like "%editingteacher%" OR roleshortname like "%student%"');
         foreach ($newuserswithrole as $user) {
             if (strpos($user->roleshortname, 'editingteacher') !== false) {
                 // Send teacher message.
-                send_onboarding_message($user->userid, $config->welcometeacher);
+                $messageid = send_onboarding_new_message($user->userid, $config->welcometeacher);
+                if ($messageid !== false) {
+                    mtrace('Sent welcome teacher message to user ID ' . $user->userid);
+                } else {
+                    mtrace('Error sending welcome teacher message to user ID ' . $user->userid);
+                }
                 
             }
             if (strpos($user->roleshortname, 'student') !== false) {
                 // Send student message.
-                send_onboarding_message($user->userid, $config->welcomestudent);
+                $messageid = send_onboarding_new_message($user->userid, $config->welcomestudent);
+                if ($messageid !== false) {
+                    mtrace('Sent welcome student message to user ID ' . $user->userid);
+                } else {
+                    mtrace('Error sending welcome student message to user ID ' . $user->userid);
+                }
             }
             
-            $DB->delete_records('local_onboarding', array('userid' => $user->userid, 'type' => 'new'));
+            $DB->delete_records('local_onboarding', array('userid' => $user->userid));
         }
     }
 }

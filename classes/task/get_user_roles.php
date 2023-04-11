@@ -51,7 +51,7 @@ class get_user_roles extends \core\task\scheduled_task {
     public function execute() {
         global $DB;
         
-        $storedusers = $DB->get_records_select('local_onboarding', 'roleshortname IS NULL AND type = "new"');
+        $storedusers = $DB->get_records_select('local_onboarding', 'roleshortname IS NULL');
         $teacher = false;
         $student = false;
         foreach ($storedusers as $storeduser) {

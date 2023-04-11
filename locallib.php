@@ -32,20 +32,19 @@ function new_user_created($event) {
     
     $newuser = new stdClass();
     $newuser->userid = $event->objectid;
-    $newuser->type = 'new';
     $newuser->timecreated = time();
     $DB->insert_record('local_onboarding', $newuser);
     
     return;
 }
 
-function send_onboarding_message($userid, $message) {
+function send_onboarding_new_message($userid, $message) {
     global $SITE;
     
     $a = new \stdClass();
     $a->sitename = $SITE->fullname;
     
-    $messagesubject = get_string('messagesubject', 'local_onboarding', $a);
+    $messagesubject = get_string('newmessagesubject', 'local_onboarding', $a);
     $messagebody = $message;
 
     $message = new \core\message\message();
@@ -60,4 +59,29 @@ function send_onboarding_message($userid, $message) {
     $message->notification = 1;
 
     $messageid = message_send($message);
+    return $messageid;
+}
+
+function send_onboardin_low_use_message($userid, $message) {
+    global $SITE;
+    
+    $a = new \stdClass();
+    $a->sitename = $SITE->fullname;
+    
+    $messagesubject = get_string('lowusemessagesubject', 'local_onboarding', $a);
+    $messagebody = $message;
+
+    $message = new \core\message\message();
+    $message->component = 'local_onboarding';
+    $message->name = 'onboardingmessage';
+    $message->userfrom = core_user::get_noreply_user();
+    $message->userto = $userid;
+    $message->subject = $messagesubject;
+    $message->fullmessage = html_to_text($messagebody);
+    $message->fullmessageformat = FORMAT_HTML;
+    $message->fullmessagehtml = $messagebody;
+    $message->notification = 1;
+
+    $messageid = message_send($message);
+    return $messageid;
 }
