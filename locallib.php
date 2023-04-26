@@ -22,6 +22,8 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * Handle the user_created event.
  *
@@ -29,21 +31,28 @@
  */
 function new_user_created($event) {
     global $DB;
-    
+
     $newuser = new stdClass();
     $newuser->userid = $event->objectid;
     $newuser->timecreated = time();
     $DB->insert_record('local_onboarding', $newuser);
-    
+
     return;
 }
 
+/**
+ * Sends the new user message.
+ *
+ * @param int $userid
+ * @param string $message
+ * @return mixed|boolean|number
+ */
 function send_onboarding_new_message($userid, $message) {
     global $SITE;
-    
+
     $a = new \stdClass();
     $a->sitename = $SITE->fullname;
-    
+
     $messagesubject = get_string('newmessagesubject', 'local_onboarding', $a);
     $messagebody = $message;
 
@@ -62,12 +71,19 @@ function send_onboarding_new_message($userid, $message) {
     return $messageid;
 }
 
-function send_onboardin_low_use_message($userid, $message) {
+/**
+ * Sends the low use message.
+ *
+ * @param int $userid
+ * @param string $message
+ * @return mixed|boolean|number
+ */
+function send_onboarding_low_use_message($userid, $message) {
     global $SITE;
-    
+
     $a = new \stdClass();
     $a->sitename = $SITE->fullname;
-    
+
     $messagesubject = get_string('lowusemessagesubject', 'local_onboarding', $a);
     $messagebody = $message;
 

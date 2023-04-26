@@ -49,11 +49,14 @@ class send_onboarding_new_messages extends \core\task\scheduled_task {
      * @see \core\task\task_base::execute()
      */
     public function execute() {
-        global $DB;
-        
+        global $DB, $CFG;
+
+        require_once($CFG->dirroot . '/local/onboarding/locallib.php');
+
         $config = get_config('onboarding');
-        
-        $newuserswithrole = $DB->get_records_select('local_onboarding', 'roleshortname like "%editingteacher%" OR roleshortname like "%student%"');
+
+        $newuserswithrole = $DB->get_records_select('local_onboarding',
+            'roleshortname like "%editingteacher%" OR roleshortname like "%student%"');
         foreach ($newuserswithrole as $user) {
             if (strpos($user->roleshortname, 'editingteacher') !== false) {
                 // Send teacher message.
@@ -63,7 +66,6 @@ class send_onboarding_new_messages extends \core\task\scheduled_task {
                 } else {
                     mtrace('Error sending welcome teacher message to user ID ' . $user->userid);
                 }
-                
             }
             if (strpos($user->roleshortname, 'student') !== false) {
                 // Send student message.
@@ -74,7 +76,7 @@ class send_onboarding_new_messages extends \core\task\scheduled_task {
                     mtrace('Error sending welcome student message to user ID ' . $user->userid);
                 }
             }
-            
+
             $DB->delete_records('local_onboarding', array('userid' => $user->userid));
         }
     }

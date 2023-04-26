@@ -50,7 +50,7 @@ class get_user_roles extends \core\task\scheduled_task {
      */
     public function execute() {
         global $DB;
-        
+
         $storedusers = $DB->get_records_select('local_onboarding', 'roleshortname IS NULL');
         $teacher = false;
         $student = false;
@@ -65,15 +65,15 @@ class get_user_roles extends \core\task\scheduled_task {
                     $student = true;
                 }
             }
-            
+
             if ($teacher && !$student) {
                 $storeduser->roleshortname = 'editingteacher';
-            } elseif (!$teacher && $student) {
+            } else if (!$teacher && $student) {
                 $storeduser->roleshortname = 'student';
-            } elseif ($teacher && $student) {
+            } else if ($teacher && $student) {
                 $storeduser->roleshortname = 'editingteacher, student';
             }
-            
+
             try {
                 $DB->update_record('local_onboarding', $storeduser);
             } catch (\dml_exception $e) {

@@ -44,7 +44,7 @@ $tasks = array(
         'month' => '*'
     ),
     array(
-        'classname' => 'local_onboarding\task\get_low_use_teachers',
+        'classname' => 'local_onboarding\task\send_low_use_messages',
         'blocking' => 0,
         'minute' => '5',
         'hour' => '4',

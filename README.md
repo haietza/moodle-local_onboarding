@@ -27,6 +27,23 @@ Alternatively, you can run
 
 to complete the installation from the command line.
 
+## Usage ##
+Configure message for new students, new teachers, low use teachers. Lose use is defined
+as having nothing or only Resources in a course (and possibly the default News forum).
+
+### New user notifications ###
+The plugin listens for user_created events, and adds those users to the local_onboarding
+table. A scheduled task runs once a day to find student and teacher roles for those users
+and adds them to the records accordingly. Another scheduled task runs once a day to send
+configured messages to those users who have a role designated.
+
+### Low use notifications ###
+A scheduled task runs once a month to find teachers in low use courses and sends them
+the configured message. Teachers who are also enrolled in non-low use courses are excluded
+from the notifications (i.e. teachers of metacourses will likely have empty courses,
+but may have courses using more features and, therefore, not need additional onboarding).
+Only one message is sent per user (versus one message per low use course).
+
 ## License ##
 
 2023 Michelle Melton <meltonml@appstate.edu>

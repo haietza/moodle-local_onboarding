@@ -33,14 +33,14 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright   2023 Michelle Melton <meltonml@appstate.edu>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class get_low_use_teachers extends \core\task\scheduled_task {
+class send_low_use_messages extends \core\task\scheduled_task {
     /**
      * Get name of scheduled task.
      * {@inheritDoc}
      * @see \core\task\scheduled_task::get_name()
      */
     public function get_name() {
-        return get_string('getlowuseteachers', 'local_onboarding');
+        return get_string('sendonboardinglowusemessages', 'local_onboarding');
     }
 
     /**
@@ -49,42 +49,48 @@ class get_low_use_teachers extends \core\task\scheduled_task {
      * @see \core\task\task_base::execute()
      */
     public function execute() {
-        global $DB;
-        
+        global $DB, $CFG;
+
+        require_once($CFG->dirroot . '/local/onboarding/locallib.php');
+        require_once($CFG->dirroot . '/enrol/externallib.php');
+        require_once($CFG->dirroot . '/lib/enrollib.php');
+
         $config = get_config('onboarding');
-        
+
         // Find course IDs that only have Resource modules and the default News forum (or no modules and/or no default News forum).
         $sql = "SELECT cm.course
                 FROM {course_modules} cm
                 JOIN {modules} m
                 ON cm.module = m.id
                 GROUP BY cm.course
-                HAVING SUM(CASE WHEN m.name <> 'resource' THEN 1 ELSE 0 END) < 2 
-                AND SUM(CASE WHEN m.name = 'forum' THEN 1 ELSE 0 END) < 2 
+                HAVING SUM(CASE WHEN m.name <> 'resource' THEN 1 ELSE 0 END) < 2
+                AND SUM(CASE WHEN m.name = 'forum' THEN 1 ELSE 0 END) < 2
                 AND cm.course <> 1";
-        
+
         $records = $DB->get_records_sql($sql);
         $lowusecourses = array_keys($records);
-        
+
         // Get all low use teachers.
         $lowusecourseteachers = array();
         foreach ($lowusecourses as $course) {
-            $teachers = \core_enrol_external::get_enrolled_users($course->course, array('withcapability' => 'moodle/course:manageactivities'));
+            $teachers = \core_enrol_external::get_enrolled_users($course, array(array('name' => 'withcapability',
+                'value' => 'moodle/course:manageactivities')));
             foreach ($teachers as $teacher) {
-                $lowusecourseteachers[] = $teacher->id;
+                $lowusecourseteachers[] = $teacher['id'];
             }
         }
         $lowusecourseteachers = array_unique($lowusecourseteachers);
-        
+
         // Find out if they are actually low use, or if they are active in other courses.
         $lowuseteachers = array();
         foreach ($lowusecourseteachers as $lowusecourseteacher) {
             // Get rid of teachers who have other courses that are not low use.
             $lowuse = true;
-            $othercourses = enrol_get_users_courses($lowusecourseteacher); // Make sure teacher
+            $othercourses = enrol_get_users_courses($lowusecourseteacher);
             foreach ($othercourses as $othercourse) {
                 $context = \context_course::instance($othercourse->id);
                 if (has_capability('moodle/course:manageactivities', $context)) {
+
                     if (!in_array($othercourse->id, $lowusecourses)) {
                         // User is teacher in a course that is not designated as low use.
                         // Break out of loop and do not add teacher for onboarding messages.
@@ -97,7 +103,7 @@ class get_low_use_teachers extends \core\task\scheduled_task {
                 $lowuseteachers[] = $teacher->id;
             }
         }
-        
+
         // Remove duplicates to only send one message to each user.
         $lowuseteachers = array_unique($lowuseteachers);
         foreach ($lowuseteachers as $lowuseteacher) {

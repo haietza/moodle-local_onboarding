@@ -28,15 +28,15 @@ defined('MOODLE_INTERNAL') || die;
 // Ensure the configurations for this site are set.
 if ($hassiteconfig) {
     $settings = new admin_settingpage('local_onboarding_settings', get_string('pluginname', 'local_onboarding'));
-    
+
     if ($ADMIN->fulltree) {
-        $settings->add(new admin_setting_confightmleditor('onboarding/welcometeacher', get_string('welcometeacher', 'local_onboarding'),
-            get_string('welcometeacher_desc', 'local_onboarding'), '', PARAM_RAW));
+        $settings->add(new admin_setting_confightmleditor('onboarding/welcometeacher',
+            get_string('welcometeacher', 'local_onboarding'), get_string('welcometeacher_desc', 'local_onboarding'), '', PARAM_RAW));
         $settings->add(new admin_setting_confightmleditor('onboarding/welcomestudent', get_string('welcomestudent', 'local_onboarding'),
             get_string('welcomestudent_desc', 'local_onboarding'), '', PARAM_RAW));
-        $settings->add(new admin_setting_confightmleditor('onboarding/lowuseteacher', get_string('lowuseteacher', 'local_onboarding'),
-            get_string('lowuseteacher_desc', 'local_onboarding'), '', PARAM_RAW));
+        $settings->add(new admin_setting_confightmleditor('onboarding/lowuseteacher',
+            get_string('lowuseteacher', 'local_onboarding'), get_string('lowuseteacher_desc', 'local_onboarding'), '', PARAM_RAW));
     }
-    
+
     $ADMIN->add('localplugins', $settings);
 }

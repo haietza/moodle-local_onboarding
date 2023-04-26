@@ -16,7 +16,7 @@
 
 /**
  * Plugin version file
- * 
+ *
  * @package   local_onboarding
  * @copyright 2023, Michelle Melton <meltonml@appstate.edu>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -24,6 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2023033003;
+$plugin->version = 2023041201;
 $plugin->requires = 2022112802;
 $plugin->component = 'local_onboarding';
