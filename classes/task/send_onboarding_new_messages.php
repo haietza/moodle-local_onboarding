@@ -49,27 +49,43 @@ class send_onboarding_new_messages extends \core\task\scheduled_task {
      * @see \core\task\task_base::execute()
      */
     public function execute() {
-        global $DB, $CFG;
+        global $DB, $CFG, $SITE;
 
         require_once($CFG->dirroot . '/local/onboarding/locallib.php');
 
         $config = get_config('onboarding');
+        $teachermessage = $config->welcometeacher;
+        $studentmessage = $config->welcomestudent;
+
+        if (strpos($teachermessage, '%sitename%') !== false ||
+                strpos($studentmessage, '%sitename%') !== false) {
+            $teachermessage = preg_replace('/%sitename%/', $SITE->fullname, $teachermessage);
+            $studentmessage = preg_replace('/%sitename%/', $SITE->fullname, $studentmessage);
+        }
 
         $newuserswithrole = $DB->get_records_select('local_onboarding',
             'roleshortname like "%editingteacher%" OR roleshortname like "%student%"');
         foreach ($newuserswithrole as $user) {
+            if (strpos($teachermessage, '%userfirstname%') !== false ||
+                    strpos($studentmessage, '%userfirstname%') !== false) {
+                $firstname = $DB->get_field('user', 'firstname', array('id' => $user->userid));
+                $teachermessage = preg_replace('/%userfirstname%/', $firstname, $teachermessage);
+                $studentmessage = preg_replace('/%userfirstname%/', $firstname, $studentmessage);
+            }
+
             if (strpos($user->roleshortname, 'editingteacher') !== false) {
                 // Send teacher message.
-                $messageid = send_onboarding_new_message($user->userid, $config->welcometeacher);
+                $messageid = send_onboarding_new_message($user->userid, $teachermessage);
                 if ($messageid !== false) {
                     mtrace('Sent welcome teacher message to user ID ' . $user->userid);
                 } else {
                     mtrace('Error sending welcome teacher message to user ID ' . $user->userid);
                 }
             }
+
             if (strpos($user->roleshortname, 'student') !== false) {
                 // Send student message.
-                $messageid = send_onboarding_new_message($user->userid, $config->welcomestudent);
+                $messageid = send_onboarding_new_message($user->userid, $studentmessage);
                 if ($messageid !== false) {
                     mtrace('Sent welcome student message to user ID ' . $user->userid);
                 } else {

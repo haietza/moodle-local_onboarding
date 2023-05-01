@@ -34,8 +34,9 @@ as having nothing or only Resources in a course (and possibly the default News f
 ### New user notifications ###
 The plugin listens for user_created events, and adds those users to the local_onboarding
 table. A scheduled task runs once a day to find student and teacher roles for those users
-and adds them to the records accordingly. Another scheduled task runs once a day to send
-configured messages to those users who have a role designated.
+and adds them to the records accordingly. Another scheduled task runs once a day (1 week
+later to allow time for roles to be assigned) to send configured messages to those users
+who have a role designated.
 
 ### Low use notifications ###
 A scheduled task runs once a month to find teachers in low use courses and sends them

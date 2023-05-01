@@ -49,13 +49,18 @@ class send_low_use_messages extends \core\task\scheduled_task {
      * @see \core\task\task_base::execute()
      */
     public function execute() {
-        global $DB, $CFG;
+        global $DB, $CFG, $SITE;
 
         require_once($CFG->dirroot . '/local/onboarding/locallib.php');
         require_once($CFG->dirroot . '/enrol/externallib.php');
         require_once($CFG->dirroot . '/lib/enrollib.php');
 
         $config = get_config('onboarding');
+        $lowusemessage = $config->lowuseteacher;
+
+        if (strpos($lowusemessage, '%sitename%') !== false) {
+            $lowusemessage = preg_replace('/%sitename%/', $SITE->fullname, $lowusemessage);
+        }
 
         // Find course IDs that only have Resource modules and the default News forum (or no modules and/or no default News forum).
         $sql = "SELECT cm.course
@@ -90,7 +95,6 @@ class send_low_use_messages extends \core\task\scheduled_task {
             foreach ($othercourses as $othercourse) {
                 $context = \context_course::instance($othercourse->id);
                 if (has_capability('moodle/course:manageactivities', $context)) {
-
                     if (!in_array($othercourse->id, $lowusecourses)) {
                         // User is teacher in a course that is not designated as low use.
                         // Break out of loop and do not add teacher for onboarding messages.
@@ -100,15 +104,20 @@ class send_low_use_messages extends \core\task\scheduled_task {
                 }
             }
             if ($lowuse) {
-                $lowuseteachers[] = $teacher->id;
+                $lowuseteachers[] = $lowusecourseteacher;
             }
         }
 
         // Remove duplicates to only send one message to each user.
         $lowuseteachers = array_unique($lowuseteachers);
         foreach ($lowuseteachers as $lowuseteacher) {
+            if (strpos($lowusemessage, '%userfirstname%') !== false) {
+                $firstname = $DB->get_field('user', 'firstname', array('id' => $lowuseteacher));
+                $lowusemessage = preg_replace('/%userfirstname%/', $firstname, $lowusemessage);;
+            }
+
             // No need to store low use teachers, just send them the email now.
-            $messageid = send_onboarding_low_use_message($lowuseteacher, $config->lowuseteacher);
+            $messageid = send_onboarding_low_use_message($lowuseteacher, $lowusemessage);
             if ($messageid !== false) {
                 mtrace('Sent low use message to user ID ' . $lowuseteacher);
             } else {

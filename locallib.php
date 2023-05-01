@@ -47,7 +47,7 @@ function new_user_created($event) {
  * @param string $message
  * @return mixed|boolean|number
  */
-function send_onboarding_new_message($userid, $message) {
+function send_onboarding_new_message($user, $message) {
     global $SITE;
 
     $a = new \stdClass();
@@ -60,7 +60,7 @@ function send_onboarding_new_message($userid, $message) {
     $message->component = 'local_onboarding';
     $message->name = 'onboardingmessage';
     $message->userfrom = core_user::get_noreply_user();
-    $message->userto = $userid;
+    $message->userto = $user->userid;
     $message->subject = $messagesubject;
     $message->fullmessage = html_to_text($messagebody);
     $message->fullmessageformat = FORMAT_HTML;
