@@ -1,8 +1,8 @@
 # Onboarding notifications #
 
-The onboarding notifications plugin allows admins to configure messages to be sent to new teachers, 
-new students, and low-use teachers to assist with getting started in the application, as well as 
-learning how to take advantage of features beyond the basic ones.
+The onboarding notifications plugin allows admins to configure messages to be sent to
+new teachers, new students, and low-use teachers to assist with getting started in the
+application, as well as learning how to take advantage of features beyond the basic ones.
 
 ## Installing via uploaded ZIP file ##
 
@@ -29,17 +29,17 @@ to complete the installation from the command line.
 
 ## Usage ##
 Configure message for new students, new teachers, low use teachers. Lose use is defined
-as having nothing or only Resources in a course (and possibly the default News forum).
+as having nothing or only File resources in a course (and possibly the default News forum).
 
 ### New user notifications ###
 The plugin listens for user_created events, and adds those users to the local_onboarding
 table. A scheduled task runs once a day to find student and teacher roles for those users
-and adds them to the records accordingly. Another scheduled task runs once a day (1 week
-later to allow time for roles to be assigned) to send configured messages to those users
-who have a role designated.
+and adds them to the records accordingly. Another scheduled task runs once a day to send 
+configured messages to those users who have a role designated.
 
 ### Low use notifications ###
-A scheduled task runs once a month to find teachers in low use courses and sends them
+A scheduled task runs three times per year (Jan 15, May 15, Aug 15 to align with spring,
+summer, and fall semesters) to find teachers in low use courses and sends them
 the configured message. Teachers who are also enrolled in non-low use courses are excluded
 from the notifications (i.e. teachers of metacourses will likely have empty courses,
 but may have courses using more features and, therefore, not need additional onboarding).
