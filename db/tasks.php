@@ -48,8 +48,8 @@ $tasks = array(
         'blocking' => 0,
         'minute' => '5',
         'hour' => '4',
-        'day' => '1',
+        'day' => '15',
         'dayofweek' => '*',
-        'month' => '*'
+        'month' => '1,5,8'
     )
 );
