@@ -52,9 +52,10 @@ class get_user_roles extends \core\task\scheduled_task {
         global $DB;
 
         $storedusers = $DB->get_records_select('local_onboarding', 'roleshortname IS NULL');
-        $teacher = false;
-        $student = false;
+
         foreach ($storedusers as $storeduser) {
+            $teacher = false;
+            $student = false;
             $roleids = $DB->get_records('role_assignments', array('userid' => $storeduser->userid), '', 'id, roleid');
             foreach ($roleids as $roleid) {
                 $roleshortname = $DB->get_field('role', 'shortname', array('id' => $roleid->roleid));

@@ -28,7 +28,7 @@ Alternatively, you can run
 to complete the installation from the command line.
 
 ## Usage ##
-Configure message for new students, new teachers, low use teachers. Lose use is defined
+Configure message for new students, new teachers, low use teachers. Low use is defined
 as having nothing or only File resources in a course (and possibly the default News forum).
 
 ### New user notifications ###

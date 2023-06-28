@@ -26,11 +26,11 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Onboarding notifications';
 $string['welcometeacher'] = 'New teacher message';
-$string['welcometeacher_desc'] = 'Enter the content for the message to be sent to new teachers. The wildcard %userfirstname% can be used.';
+$string['welcometeacher_desc'] = 'Enter the content for the message to be sent to new teachers. The wildcards %sitename% and %userfirstname% can be used.';
 $string['welcomestudent'] = 'New student message';
-$string['welcomestudent_desc'] = 'Enter the content for the message to be sent to new students. The wildcard %userfirstname% can be used.';
+$string['welcomestudent_desc'] = 'Enter the content for the message to be sent to new students. The wildcards %sitename% and %userfirstname% can be used.';
 $string['lowuseteacher'] = 'Low use teacher message';
-$string['lowuseteacher_desc'] = 'Enter the content for the message to be sent to low use teachers. The wildcard %userfirstname% can be used.';
+$string['lowuseteacher_desc'] = 'Enter the content for the message to be sent to low use teachers. The wildcards %sitename% and %userfirstname% can be used.';
 $string['getroles'] = 'Get stored user roles';
 $string['sendonboardingnewmessages'] = 'Send onboarding new messages';
 $string['sendonboardinglowusemessages'] = 'Send onboarding low use messages';

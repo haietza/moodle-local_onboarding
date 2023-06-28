@@ -69,13 +69,13 @@ class send_onboarding_new_messages extends \core\task\scheduled_task {
             if (strpos($teachermessage, '%userfirstname%') !== false ||
                     strpos($studentmessage, '%userfirstname%') !== false) {
                 $firstname = $DB->get_field('user', 'firstname', array('id' => $user->userid));
-                $teachermessage = preg_replace('/%userfirstname%/', $firstname, $teachermessage);
-                $studentmessage = preg_replace('/%userfirstname%/', $firstname, $studentmessage);
+                $teacherusermessage = preg_replace('/%userfirstname%/', $firstname, $teachermessage);
+                $studentusermessage = preg_replace('/%userfirstname%/', $firstname, $studentmessage);
             }
 
             if (strpos($user->roleshortname, 'editingteacher') !== false) {
                 // Send teacher message.
-                $messageid = send_onboarding_new_message($user->userid, $teachermessage);
+                $messageid = send_onboarding_new_message($user->userid, $teacherusermessage);
                 if ($messageid !== false) {
                     mtrace('Sent welcome teacher message to user ID ' . $user->userid);
                 } else {
@@ -85,7 +85,7 @@ class send_onboarding_new_messages extends \core\task\scheduled_task {
 
             if (strpos($user->roleshortname, 'student') !== false) {
                 // Send student message.
-                $messageid = send_onboarding_new_message($user->userid, $studentmessage);
+                $messageid = send_onboarding_new_message($user->userid, $studentusermessage);
                 if ($messageid !== false) {
                     mtrace('Sent welcome student message to user ID ' . $user->userid);
                 } else {

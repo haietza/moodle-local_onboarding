@@ -113,11 +113,11 @@ class send_low_use_messages extends \core\task\scheduled_task {
         foreach ($lowuseteachers as $lowuseteacher) {
             if (strpos($lowusemessage, '%userfirstname%') !== false) {
                 $firstname = $DB->get_field('user', 'firstname', array('id' => $lowuseteacher));
-                $lowusemessage = preg_replace('/%userfirstname%/', $firstname, $lowusemessage);;
+                $usermessage = preg_replace('/%userfirstname%/', $firstname, $lowusemessage);;
             }
 
             // No need to store low use teachers, just send them the email now.
-            $messageid = send_onboarding_low_use_message($lowuseteacher, $lowusemessage);
+            $messageid = send_onboarding_low_use_message($lowuseteacher, $usermessage);
             if ($messageid !== false) {
                 mtrace('Sent low use message to user ID ' . $lowuseteacher);
             } else {
