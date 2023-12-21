@@ -75,7 +75,7 @@ class send_low_use_messages extends \core\task\scheduled_task {
         $records = $DB->get_records_sql($sql);
         $lowusecourses = array_keys($records);
 
-        // Get all low use teachers.
+        // Get teacher in low use courses identified above.
         $lowusecourseteachers = array();
         foreach ($lowusecourses as $course) {
             $teachers = \core_enrol_external::get_enrolled_users($course, array(array('name' => 'withcapability',
@@ -84,9 +84,10 @@ class send_low_use_messages extends \core\task\scheduled_task {
                 $lowusecourseteachers[] = $teacher['id'];
             }
         }
+        // Remove duplicates, if teachers are enroled in more than one low use course.
         $lowusecourseteachers = array_unique($lowusecourseteachers);
 
-        // Find out if they are actually low use, or if they are active in other courses.
+        // Remove teachers who are also enroled in a non-low use course.
         $lowuseteachers = array();
         foreach ($lowusecourseteachers as $lowusecourseteacher) {
             // Get rid of teachers who have other courses that are not low use.
@@ -108,8 +109,6 @@ class send_low_use_messages extends \core\task\scheduled_task {
             }
         }
 
-        // Remove duplicates to only send one message to each user.
-        $lowuseteachers = array_unique($lowuseteachers);
         foreach ($lowuseteachers as $lowuseteacher) {
             if (strpos($lowusemessage, '%userfirstname%') !== false) {
                 $firstname = $DB->get_field('user', 'firstname', array('id' => $lowuseteacher));

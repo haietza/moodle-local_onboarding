@@ -28,16 +28,19 @@ Alternatively, you can run
 to complete the installation from the command line.
 
 ## Usage ##
+
 Configure message for new students, new teachers, low use teachers. Low use is defined
 as having nothing or only File resources in a course (and possibly the default News forum).
 
 ### New user notifications ###
+
 The plugin listens for user_created events, and adds those users to the local_onboarding
 table. A scheduled task runs once a day to find student and teacher roles for those users
 and adds them to the records accordingly. Another scheduled task runs once a day to send 
 configured messages to those users who have a role designated.
 
 ### Low use notifications ###
+
 A scheduled task runs three times per year (Jan 15, May 15, Aug 15 to align with spring,
 summer, and fall semesters) to find teachers in low use courses and sends them
 the configured message. Teachers who are also enrolled in non-low use courses are excluded
