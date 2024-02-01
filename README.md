@@ -48,6 +48,10 @@ from the notifications (i.e. teachers of metacourses will likely have empty cour
 but may have courses using more features and, therefore, not need additional onboarding).
 Only one message is sent per user (versus one message per low use course).
 
+### Cleanup ###
+A scheduled task runs once a month to delete user records in the local_onboarding table
+that have not been assigned a role.
+
 ## License ##
 
 2023 Michelle Melton <meltonml@appstate.edu>

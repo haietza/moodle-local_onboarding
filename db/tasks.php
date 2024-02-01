@@ -51,5 +51,14 @@ $tasks = array(
         'day' => '15',
         'dayofweek' => '*',
         'month' => '1,5,8'
+    ),
+    array(
+        'classname' => 'local_onboarding\task\cleanup',
+        'blocking' => 0,
+        'minute' => '5',
+        'hour' => '3',
+        'day' => '1',
+        'dayofweek' => '*',
+        'month' => '*'
     )
 );

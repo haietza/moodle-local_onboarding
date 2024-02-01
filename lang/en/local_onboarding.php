@@ -34,6 +34,7 @@ $string['lowuseteacher_desc'] = 'Enter the content for the message to be sent to
 $string['getroles'] = 'Get stored user roles';
 $string['sendonboardingnewmessages'] = 'Send onboarding new messages';
 $string['sendonboardinglowusemessages'] = 'Send onboarding low use messages';
+$string['cleanup'] = 'Cleanup onboarding table';
 $string['newmessagesubject'] = 'Welcome to {$a->sitename}!';
 $string['lowusemessagesubject'] = 'Make the most of your {$a->sitename} course!';
 $string['messageprovider:onboardingmessage'] = 'Onboarding notifications';
