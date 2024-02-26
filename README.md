@@ -50,7 +50,7 @@ Only one message is sent per user (versus one message per low use course).
 
 ### Cleanup ###
 A scheduled task runs once a month to delete user records in the local_onboarding table
-that have not been assigned a role.
+that have not been assigned a role and are one year or older.
 
 ## License ##
 
