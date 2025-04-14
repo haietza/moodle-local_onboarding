@@ -24,7 +24,7 @@
 function xmldb_local_onboarding_upgrade($oldversion) {
     global $DB;
     $dbman = $DB->get_manager();
-    if ($oldversion < 2024020102) {
+    if ($oldversion < 2024020101) {
         $redirectlinktable = new xmldb_table("local_onboarding_redirect_links");
         if (!$dbman->table_exists($redirectlinktable)) {
             $redirectlinktable->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
@@ -44,7 +44,7 @@ function xmldb_local_onboarding_upgrade($oldversion) {
             $linkclicktable->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
             $dbman->create_table($linkclicktable);
         }
-        upgrade_plugin_savepoint(true, 2024020102, "local", "onboarding");
+        upgrade_plugin_savepoint(true, 2024020101, "local", "onboarding");
     }
     return true;
 }
