@@ -18,7 +18,6 @@
  * Redirect URL.
  *
  * @package   local_onboarding
- * @category  admin
  * @copyright 2025, Lina Brown <brownli2@appstate.edu>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
