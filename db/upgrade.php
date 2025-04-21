@@ -28,7 +28,6 @@ function xmldb_local_onboarding_upgrade($oldversion) {
         $redirectlinktable = new xmldb_table("local_onboarding_redirect_links");
         if (!$dbman->table_exists($redirectlinktable)) {
             $redirectlinktable->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-            $redirectlinktable->add_field('shortname', XMLDB_TYPE_CHAR, '255', null, null, null, null);
             $redirectlinktable->add_field('linkname', XMLDB_TYPE_CHAR, '255', null, null, null, null);
             $redirectlinktable->add_field('fullurl', XMLDB_TYPE_CHAR, '255', null, null, null, null);
             $redirectlinktable->add_field('emailtype', XMLDB_TYPE_CHAR, '255', null, null, null, null);
