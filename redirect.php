@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Redirect URL.
+ * Redirect URL to capture link clicks
  *
  * @package   local_onboarding
  * @copyright 2025, Lina Brown <brownli2@appstate.edu>
@@ -25,22 +25,20 @@
 require_once('../../config.php');
 global $DB;
 
-echo 'This is the redirect page!';
-
-$id = required_param('id', PARAM_ALPHANUM); // This will the the id from the URL in the email
-$useripaddress = $_SERVER['REMOTE_ADDR'];
-$userbrowser = $_SERVER['HTTP_USER_AGENT'];
+$shortname = required_param('shortname', PARAM_ALPHANUM); // Link shortname from the table.
+$userid = required_param('userid', PARAM_INT); // Userid wildcard.
 $userclicktime = time();
 
 // Get the record for the link.
-$redirectlinkrecord = $DB->get_record('local_onboarding_redirect_links', ['shortname'  => $id]);
+$redirectlinkrecord = $DB->get_record('local_onboarding_redirect_links', ['shortname'  => $shortname]);
+print_r($redirectlinkrecord);
 
 // Create an object to log the link click.
 $linkclickrecord = new stdClass();
 $linkclickrecord->linkid = $redirectlinkrecord->id;
-$linkclickrecord->useripaddress = $useripaddress;
-$linkclickrecord->userbrowser = $userbrowser;
-$linkclickrecord->userclicktime = $userclicktime;
+$linkclickrecord->userid = $userid;
+$linkclickrecord->timeclicked = $userclicktime;
+print_r($linkclickrecord);
 
 // Log the click.
 $DB->insert_record('local_onboarding_link_clicks', $linkclickrecord);
