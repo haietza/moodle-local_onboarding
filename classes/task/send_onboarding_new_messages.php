@@ -72,7 +72,13 @@ class send_onboarding_new_messages extends \core\task\scheduled_task {
                 $teacherusermessage = preg_replace('/%userfirstname%/', $firstname, $teachermessage);
                 $studentusermessage = preg_replace('/%userfirstname%/', $firstname, $studentmessage);
             }
-
+            // Add replacement to populate userid so we can feed that in as a query parameter.
+            if (strpos($teachermessage, '%userid%') !== false ||
+                    strpos($studentmessage, '%userid%') !== false) {
+                $userid = $user->userid;
+                $teacherusermessage = preg_replace('/%userid%/', $userid, $teacherusermessage);
+                $studentusermessage = preg_replace('/%userid%/', $userid, $studentusermessage);
+            }
             if (strpos($user->roleshortname, 'editingteacher') !== false) {
                 // Send teacher message.
                 $messageid = send_onboarding_new_message($user->userid, $teacherusermessage);
