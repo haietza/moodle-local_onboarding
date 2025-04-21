@@ -34,10 +34,9 @@
     <TABLE NAME="local_onboarding_link_clicks" COMMENT="Tracks clicks on onboarding links">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="linkid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="" SEQUENCE="false" COMMENT="Foreign key reference to local_onboarding_redirect_links.id"/>
-        <FIELD NAME="useripaddress" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="userbrowser" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="timeclicked" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="" SEQUENCE="false" COMMENT="Foreign key reference to local_onboarding_redirect_links.id"/>
+        <FIELD NAME="linkid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timeclicked" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
