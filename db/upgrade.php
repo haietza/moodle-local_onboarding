@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Create DB table
+ * Create new DB tables
  * @package   local_onboarding
  * @copyright 2025, Lina Brown <brownli2@appstate.edu>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -31,15 +31,15 @@ function xmldb_local_onboarding_upgrade($oldversion) {
             $redirectlinktable->add_field('shortname', XMLDB_TYPE_CHAR, '255', null, null, null, null);
             $redirectlinktable->add_field('linkname', XMLDB_TYPE_CHAR, '255', null, null, null, null);
             $redirectlinktable->add_field('fullurl', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+            $redirectlinktable->add_field('emailtype', XMLDB_TYPE_CHAR, '255', null, null, null, null);
             $redirectlinktable->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
             $dbman->create_table($redirectlinktable);
         }
         $linkclicktable = new xmldb_table("local_onboarding_link_clicks");
         if (!$dbman->table_exists($linkclicktable)) {
             $linkclicktable->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $linkclicktable->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
             $linkclicktable->add_field('linkid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-            $linkclicktable->add_field('useripaddress', XMLDB_TYPE_CHAR, '255', null, null, null, null);
-            $linkclicktable->add_field('userbrowser', XMLDB_TYPE_CHAR, '255', null, null, null, null);
             $linkclicktable->add_field('timeclicked', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
             $linkclicktable->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
             $dbman->create_table($linkclicktable);
