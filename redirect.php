@@ -31,14 +31,12 @@ $userclicktime = time();
 
 // Get the record for the link.
 $redirectlinkrecord = $DB->get_record('local_onboarding_redirect_links', ['shortname'  => $shortname]);
-print_r($redirectlinkrecord);
 
 // Create an object to log the link click.
 $linkclickrecord = new stdClass();
 $linkclickrecord->linkid = $redirectlinkrecord->id;
 $linkclickrecord->userid = $userid;
 $linkclickrecord->timeclicked = $userclicktime;
-print_r($linkclickrecord);
 
 // Log the click.
 $DB->insert_record('local_onboarding_link_clicks', $linkclickrecord);
