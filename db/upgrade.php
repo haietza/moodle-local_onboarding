@@ -38,9 +38,9 @@ function xmldb_local_onboarding_upgrade($oldversion) {
         $linkclicktable = new xmldb_table("local_onboarding_link_clicks");
         if (!$dbman->table_exists($linkclicktable)) {
             $linkclicktable->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-            $linkclicktable->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-            $linkclicktable->add_field('linkid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-            $linkclicktable->add_field('timeclicked', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+            $linkclicktable->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL);
+            $linkclicktable->add_field('linkid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL);
+            $linkclicktable->add_field('timeclicked', XMLDB_TYPE_INTEGER, '10', XMLDB_NOTNULL);
             $linkclicktable->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
             $dbman->create_table($linkclicktable);
         }
