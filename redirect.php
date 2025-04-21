@@ -25,21 +25,29 @@
 require_once('../../config.php');
 global $DB;
 
-$shortname = required_param('shortname', PARAM_ALPHANUM); // Link shortname from the table.
+$id = required_param('id', PARAM_ALPHANUM); // Link shortname from the table.
 $userid = required_param('userid', PARAM_INT); // Userid wildcard.
 $userclicktime = time();
 
-// Get the record for the link.
-$redirectlinkrecord = $DB->get_record('local_onboarding_redirect_links', ['shortname'  => $shortname]);
+// Check if we have already logged a click on this link for this user.
+$existingclick = $DB->record_exists('local_onboarding_link_clicks', [
+    'linkid' => $id,
+    'userid' => $userid
+]);
 
-// Create an object to log the link click.
-$linkclickrecord = new stdClass();
-$linkclickrecord->linkid = $redirectlinkrecord->id;
-$linkclickrecord->userid = $userid;
-$linkclickrecord->timeclicked = $userclicktime;
+// Get record so we can get full url to redirect
+$redirectlinkrecord = $DB->get_record('local_onboarding_redirect_links', ['id'  => $id]);
 
-// Log the click.
-$DB->insert_record('local_onboarding_link_clicks', $linkclickrecord);
+if (!$existingclick) {
+    // Create an object to log the link click.
+    $linkclickrecord = new stdClass();
+    $linkclickrecord->linkid = $redirectlinkrecord->id;
+    $linkclickrecord->userid = $userid;
+    $linkclickrecord->timeclicked = $userclicktime;
+
+    // Log the click.
+    $DB->insert_record('local_onboarding_link_clicks', $linkclickrecord);
+}
 
 //redirect user to Confluence
 header('Location: '.$redirectlinkrecord->fullurl);
