@@ -27,11 +27,11 @@ defined('MOODLE_INTERNAL') || die();
 
 $messageproviders = [
 
-    'onboardingmessage' => array(
-        'defaults' => array(
+    'onboardingmessage' => [
+        'defaults' => [
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'instantmessage' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'anyotheroutput' => MESSAGE_PERMITTED,
-        ),
-    ),
+        ],
+    ],
 ];

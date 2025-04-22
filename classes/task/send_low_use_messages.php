@@ -76,10 +76,10 @@ class send_low_use_messages extends \core\task\scheduled_task {
         $lowusecourses = array_keys($records);
 
         // Get teacher in low use courses identified above.
-        $lowusecourseteachers = array();
+        $lowusecourseteachers = [];
         foreach ($lowusecourses as $course) {
-            $teachers = \core_enrol_external::get_enrolled_users($course, array(array('name' => 'withcapability',
-                'value' => 'moodle/course:manageactivities')));
+            $teachers = \core_enrol_external::get_enrolled_users($course, [['name' => 'withcapability',
+                'value' => 'moodle/course:manageactivities']]);
             foreach ($teachers as $teacher) {
                 $lowusecourseteachers[] = $teacher['id'];
             }
@@ -88,7 +88,7 @@ class send_low_use_messages extends \core\task\scheduled_task {
         $lowusecourseteachers = array_unique($lowusecourseteachers);
 
         // Remove teachers who are also enroled in a non-low use course.
-        $lowuseteachers = array();
+        $lowuseteachers = [];
         foreach ($lowusecourseteachers as $lowusecourseteacher) {
             // Get rid of teachers who have other courses that are not low use.
             $lowuse = true;
@@ -112,7 +112,7 @@ class send_low_use_messages extends \core\task\scheduled_task {
         foreach ($lowuseteachers as $lowuseteacher) {
             $usermessage = $lowusemessage; // Don't want userid to overwrite replace for name.
             if (strpos($lowusemessage, '%userfirstname%') !== false) {
-                $firstname = $DB->get_field('user', 'firstname', array('id' => $lowuseteacher));
+                $firstname = $DB->get_field('user', 'firstname', ['id' => $lowuseteacher]);
                 $usermessage = preg_replace('/%userfirstname%/', $firstname, $usermessage);
             }
             if (strpos($lowusemessage, '%userid%') !== false) {

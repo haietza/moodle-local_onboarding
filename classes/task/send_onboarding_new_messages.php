@@ -68,7 +68,7 @@ class send_onboarding_new_messages extends \core\task\scheduled_task {
         foreach ($newuserswithrole as $user) {
             if (strpos($teachermessage, '%userfirstname%') !== false ||
                     strpos($studentmessage, '%userfirstname%') !== false) {
-                $firstname = $DB->get_field('user', 'firstname', array('id' => $user->userid));
+                $firstname = $DB->get_field('user', 'firstname', ['id' => $user->userid]);
                 $teacherusermessage = preg_replace('/%userfirstname%/', $firstname, $teachermessage);
                 $studentusermessage = preg_replace('/%userfirstname%/', $firstname, $studentmessage);
             }
@@ -99,7 +99,7 @@ class send_onboarding_new_messages extends \core\task\scheduled_task {
                 }
             }
 
-            $DB->delete_records('local_onboarding', array('userid' => $user->userid));
+            $DB->delete_records('local_onboarding', ['userid' => $user->userid]);
         }
     }
 }

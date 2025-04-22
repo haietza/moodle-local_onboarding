@@ -27,10 +27,9 @@ defined('MOODLE_INTERNAL') || die();
 
 $callback = 'local_onboarding_observer::manage_events';
 
-$observers = array(
-
-    array(
+$observers = [
+    [
         'eventname' => '\core\event\user_created',
         'callback' => $callback,
-    ),
-);
+    ],
+];

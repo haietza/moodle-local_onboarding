@@ -55,7 +55,7 @@ class cleanup extends \core\task\scheduled_task {
 
         foreach ($storedusers as $storeduser) {
             if ($storeduser->timecreated < strtotime("-1 year")) {
-                $DB->delete_records('local_onboarding', array('userid' => $storeduser->userid));
+                $DB->delete_records('local_onboarding', ['userid' => $storeduser->userid]);
             }
         }
     }

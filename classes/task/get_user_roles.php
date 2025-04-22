@@ -56,9 +56,9 @@ class get_user_roles extends \core\task\scheduled_task {
         foreach ($storedusers as $storeduser) {
             $teacher = false;
             $student = false;
-            $roleids = $DB->get_records('role_assignments', array('userid' => $storeduser->userid), '', 'id, roleid');
+            $roleids = $DB->get_records('role_assignments', ['userid' => $storeduser->userid], '', 'id, roleid');
             foreach ($roleids as $roleid) {
-                $roleshortname = $DB->get_field('role', 'shortname', array('id' => $roleid->roleid));
+                $roleshortname = $DB->get_field('role', 'shortname', ['id' => $roleid->roleid]);
                 if ($roleshortname === 'editingteacher') {
                     $teacher = true;
                 }

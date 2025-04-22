@@ -24,41 +24,41 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$tasks = array(
-    array(
+$tasks = [
+    [
         'classname' => 'local_onboarding\task\get_user_roles',
         'blocking' => 0,
         'minute' => '5',
         'hour' => '3',
         'day' => '*',
         'dayofweek' => '*',
-        'month' => '*'
-    ),
-    array(
+        'month' => '*',
+    ],
+    [
         'classname' => 'local_onboarding\task\send_onboarding_new_messages',
         'blocking' => 0,
         'minute' => '5',
         'hour' => '4',
         'day' => '*',
         'dayofweek' => '*',
-        'month' => '*'
-    ),
-    array(
+        'month' => '*',
+    ],
+    [
         'classname' => 'local_onboarding\task\send_low_use_messages',
         'blocking' => 0,
         'minute' => '5',
         'hour' => '4',
         'day' => '15',
         'dayofweek' => '*',
-        'month' => '1,5,8'
-    ),
-    array(
+        'month' => '1,5,8',
+    ],
+    [
         'classname' => 'local_onboarding\task\cleanup',
         'blocking' => 0,
         'minute' => '5',
         'hour' => '3',
         'day' => '1',
         'dayofweek' => '*',
-        'month' => '*'
-    )
-);
+        'month' => '*',
+    ],
+];
