@@ -35,7 +35,7 @@ $existingclick = $DB->record_exists('local_onboarding_link_clicks', [
     'userid' => $userid,
 ]);
 
-// Get record so we can get full url to redirect
+// Get record so we can get full url to redirect.
 $redirectlinkrecord = $DB->get_record('local_onboarding_redirect_links', ['id'  => $id]);
 
 // Only log the click if the user hasn't already clicked it.
