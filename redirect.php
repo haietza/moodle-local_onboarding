@@ -25,7 +25,7 @@
 require_once('../../config.php');
 global $DB;
 
-$id = required_param('id', PARAM_ALPHANUM); // Link shortname from the table.
+$id = required_param('id', PARAM_ALPHANUM); // Link id from the table.
 $userid = required_param('userid', PARAM_INT); // Userid wildcard.
 $userclicktime = time();
 
