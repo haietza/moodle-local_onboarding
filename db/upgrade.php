@@ -21,6 +21,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/**
+ * Create new DB tables
+ * @param int  $oldversion version of the plugin that does not have tables.
+ * @return boolean true
+ */
 function xmldb_local_onboarding_upgrade($oldversion) {
     global $DB;
     $dbman = $DB->get_manager();
