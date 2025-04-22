@@ -38,6 +38,7 @@ $existingclick = $DB->record_exists('local_onboarding_link_clicks', [
 // Get record so we can get full url to redirect
 $redirectlinkrecord = $DB->get_record('local_onboarding_redirect_links', ['id'  => $id]);
 
+// Only log the click if the user hasn't already clicked it.
 if (!$existingclick) {
     // Create an object to log the link click.
     $linkclickrecord = new stdClass();
@@ -49,6 +50,6 @@ if (!$existingclick) {
     $DB->insert_record('local_onboarding_link_clicks', $linkclickrecord);
 }
 
-//redirect user to Confluence
+// Redirect user to site.
 header('Location: '.$redirectlinkrecord->fullurl);
 die();
