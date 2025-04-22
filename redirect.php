@@ -32,7 +32,7 @@ $userclicktime = time();
 // Check if we have already logged a click on this link for this user.
 $existingclick = $DB->record_exists('local_onboarding_link_clicks', [
     'linkid' => $id,
-    'userid' => $userid
+    'userid' => $userid,
 ]);
 
 // Get record so we can get full url to redirect
