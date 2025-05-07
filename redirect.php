@@ -22,8 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+require_once("../../config.php");
 global $DB;
-
 $id = required_param('id', PARAM_ALPHANUM); // Link id from the table.
 $userid = required_param('userid', PARAM_INT); // Userid wildcard.
 $userclicktime = time();
