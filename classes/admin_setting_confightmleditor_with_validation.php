@@ -15,37 +15,38 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Custom admin_setting_confightmleditor to add validation to make sure trackable links are correct.
- *
+ * Custom html editor class for redirect links.
  * @package   local_onboarding
  * @copyright 2025, Lina Brown <brownli2@appstate.edu>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace local_onboarding;
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Custom admin_setting_confightmleditor to add validation to make sure trackable links are correct.
+ */
 class admin_setting_confightmleditor_with_validation extends \admin_setting_confightmleditor {
-    /* Helper function to check that the redirect URL is in the right format if user is hoping to track links.
-    * Correct format is http://sitename.com/local/onboarding/redirect.php?id=<linkid>&userid=%userid%
-    * How this can be wrong:
-    * 1. no id + no userid
-    * 2. no id + userid = %userid%
-    * 3. no id + userid is not %userid%
-    * 4. id + no userid
-    * 5. id + userid is not %userid%
-    * 6. id is not in table
-    * 
-    * @param string $text
-    * @return $text
-    * @throws Exception
-    */
+
+    /**
+     * Helper function to check that the redirect URL is in the right format if user is hoping to track links.
+     * Correct format is http://sitename.com/local/onboarding/redirect.php?id=<linkid>&userid=%userid%
+     * @param string $text text in the form
+     * @return string $text
+     * @throws Exception
+     * Redirect URL can be wrong in the following ways:
+     * 1. no id + no userid
+     * 2. no id + userid = %userid%
+     * 3. no id + userid is not %userid%
+     * 4. id + no userid
+     * 5. id + userid is not %userid%
+     * 6. id is not in table
+     */
     public function check_url_syntax($text) {
         global $DB;
         libxml_use_internal_errors(true);
         $dd = new \DOMDocument();
         $dd->loadHTML(mb_convert_encoding($text, 'HTML-ENTITIES', 'UTF-8'));
-        // Get link tags - could be tracking clicks for more than one link
+        // Get link tags - could be tracking clicks for more than one link.
         $links = $dd->getElementsByTagName('a');
         $redirecturl = 'redirect.php';
         foreach ($links as $link) {
@@ -56,21 +57,20 @@ class admin_setting_confightmleditor_with_validation extends \admin_setting_conf
             if (empty($urlstructure['path']) || !str_ends_with($urlstructure['path'], $redirecturl)) {
                 continue;
             }
-            // Check if there are BOTH query parameters
+            // Check if there are BOTH query parameters.
             if (!isset($urlstructure['query'])) {
                 throw new \Exception(get_string('missingbothparamserror', 'local_onboarding'));
-                // If we have query params should be id=10&userid=%userid
+                // If we have query params should be id=10&userid=%userid.
             }
             parse_str($urlstructure['query'], $result);
             if (empty($result['id']) || empty($result['userid'])) {
                 if (empty($result['id'])) {
                     throw new \Exception (get_string('missingiderror', 'local_onboarding'));
-                }
-                else if (empty($result['userid'])) {
+                } else if (empty($result['userid'])) {
                     throw new \Exception (get_string('missinguseriderror', 'local_onboarding'));
                 }
             }
-            // Check linkid is in redirect id table
+            // Check linkid is in redirect links table.
             if (!is_numeric($result['id']) || !$DB->record_exists('local_onboarding_redirect_links', ['id' => $result['id']])) {
                 throw new \Exception(get_string('invalidlinkiderror', 'local_onboarding'));
             }
@@ -84,14 +84,14 @@ class admin_setting_confightmleditor_with_validation extends \admin_setting_conf
         return $text;
     }
     /**
-     * Custom validation to check for correct URL for link tracking
+     * Custom validation to check for correct URL for link tracking.
      * @param array $data - data submitted to form
      * @return true or string, true if everything is correct or error message
      */
     public function validate($data) {
-        $parent_result = parent::validate($data);
-        if ($parent_result !== true) {
-            return $parent_result;
+        $parentresult = parent::validate($data);
+        if ($parentresult !== true) {
+            return $parentresult;
         }
         try {
             $this->check_url_syntax($data);
