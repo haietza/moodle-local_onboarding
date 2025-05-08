@@ -31,7 +31,6 @@ class admin_setting_confightmleditor_with_validation extends \admin_setting_conf
      * Helper function to check that the redirect URL is in the right format if user is hoping to track links.
      * Correct format is http://sitename.com/local/onboarding/redirect.php?id=<linkid>&userid=%userid%
      * @param string $text text in the form
-     * @return string $text
      * @throws Exception
      * Redirect URL can be wrong in the following ways:
      * 1. no id + no userid
