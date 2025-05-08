@@ -23,6 +23,7 @@
  */
 
 require_once("../../config.php");
+
 global $DB;
 $id = required_param('id', PARAM_ALPHANUM); // Link id from the table.
 $userid = required_param('userid', PARAM_INT); // Userid wildcard.
@@ -33,18 +34,17 @@ $existingclick = $DB->record_exists('local_onboarding_link_clicks', [
     'linkid' => $id,
     'userid' => $userid,
 ]);
-
+$validuser = $DB->record_exists('user', ['id' => $userid]);
 // Get record so we can get full url to redirect.
 $redirectlinkrecord = $DB->get_record('local_onboarding_redirect_links', ['id'  => $id]);
 
-// Only log the click if the user hasn't already clicked it.
-if (!$existingclick) {
+// Only log the click if the user hasn't already clicked it and userid is valid.
+if (!$existingclick && $validuser) {
     // Create an object to log the link click.
     $linkclickrecord = new stdClass();
     $linkclickrecord->linkid = $redirectlinkrecord->id;
     $linkclickrecord->userid = $userid;
     $linkclickrecord->timeclicked = $userclicktime;
-
     // Log the click.
     $DB->insert_record('local_onboarding_link_clicks', $linkclickrecord);
 }
