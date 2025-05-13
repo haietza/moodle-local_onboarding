@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Custom html editor class for redirect links.
+ * Custom html editor class with validation for redirect links.
  * @package   local_onboarding
  * @copyright 2025, Lina Brown <brownli2@appstate.edu>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -100,4 +100,3 @@ class admin_setting_confightmleditor_with_validation extends \admin_setting_conf
         }
     }
 }
-
