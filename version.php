@@ -24,6 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2024020101;
+$plugin->version = 2024020102;
 $plugin->requires = 2022112802;
 $plugin->component = 'local_onboarding';
