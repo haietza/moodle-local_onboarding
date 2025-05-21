@@ -41,13 +41,14 @@ class admin_setting_confightmleditor_with_validation extends \admin_setting_conf
      * 6. id is not in table
      */
     public function check_url_syntax($text) {
-        global $DB;
+        global $DB, $CFG;
         libxml_use_internal_errors(true);
         $dd = new \DOMDocument();
         $dd->loadHTML(mb_convert_encoding($text, 'HTML-ENTITIES', 'UTF-8'));
         // Get link tags - could be tracking clicks for more than one link.
         $links = $dd->getElementsByTagName('a');
         $redirecturl = '/local/onboarding/redirect.php';
+        $site = parse_url($CFG->wwwroot);
         foreach ($links as $link) {
             $href = html_entity_decode($link->getAttribute('href'));
             // Variables for all the bits we need to check for. 
@@ -56,28 +57,34 @@ class admin_setting_confightmleditor_with_validation extends \admin_setting_conf
             if (empty($urlstructure['path'])) {
                 continue;
             }
-            // Check that path is /local/onboarding/redirect.php - needs to have the path or redirect won't work.
-            if (str_ends_with($urlstructure['path'], 'redirect.php') && $urlstructure['path'] !== $redirecturl) {
+            $currenthost = $urlstructure['host'] ?? null;
+            $trackedlink = ($urlstructure['path'] === $redirecturl && $currenthost === $site['host']);
+            // Check if we are using the redirect link - if we are, then check to make sure it's in the right foramt.
+            if ($trackedlink) {
+                // Check if there are BOTH query parameters.
+                if (!isset($urlstructure['query'])) {
+                    throw new \Exception(get_string('missingbothparamserror', 'local_onboarding'));
+                    // If we have query params should be id=10&userid=%userid.
+                }
+                parse_str($urlstructure['query'], $result);
+                if (empty($result['id'])) {
+                        throw new \Exception (get_string('missingiderror', 'local_onboarding'));
+                }
+                if (empty($result['userid'])) {
+                        throw new \Exception (get_string('missinguseriderror', 'local_onboarding'));
+                }
+                // Check linkid is in redirect links table.
+                if (!is_numeric($result['id']) || !$DB->record_exists('local_onboarding_redirect_links', ['id' => $result['id']])) {
+                    throw new \Exception(get_string('invalidlinkiderror', 'local_onboarding'));
+                }
+                // Check linkid is the userid wildcard.
+                if ($result['userid'] !== '%userid%') {
+                    throw new \Exception(get_string('useridparamerror', 'local_onboarding'));
+                }
+            }
+            // Check we are using the redirect link path correctly.
+            if ($urlstructure['path'] !== $redirecturl && $urlstructure['host'] === $site['host']) {
                 throw new \Exception(get_string('invalidpatherror', 'local_onboarding'));
-            }
-            // Check if there are BOTH query parameters.
-            if (!isset($urlstructure['query'])) {
-                throw new \Exception(get_string('missingbothparamserror', 'local_onboarding'));
-                // If we have query params should be id=10&userid=%userid.
-            }
-            parse_str($urlstructure['query'], $result);
-            if (empty($result['id'])) {
-                    throw new \Exception (get_string('missingiderror', 'local_onboarding'));
-            }
-            if (empty($result['userid'])) {
-                    throw new \Exception (get_string('missinguseriderror', 'local_onboarding'));
-            }
-            // Check linkid is in redirect links table.
-            if (!is_numeric($result['id']) || !$DB->record_exists('local_onboarding_redirect_links', ['id' => $result['id']])) {
-                throw new \Exception(get_string('invalidlinkiderror', 'local_onboarding'));
-            }
-            if ($result['userid'] !== '%userid%') {
-                throw new \Exception(get_string('useridparamerror', 'local_onboarding'));
             }
         }
         // Restore libxml error handling to default.
