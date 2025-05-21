@@ -45,4 +45,4 @@ $string['invalidlinkiderror'] = 'The id in the redirect url does not correspond 
 $string['useridparamerror'] = 'The userid parameter must be set to %userid%';
 $string['invalidlinkrecord'] = 'The linkid was not found in the local_onboarding_redirect_links table.';
 $string['cachedef_onboardinglinkdata'] = 'Onboarding redirect full link URLS from database.';
-$string['invalidpatherror'] = 'The redirect link must have the correct path https://asulearn.appstate.edu/local/onboarding/redirect.php.';
+$string['invalidpatherror'] = 'The redirect link must have the correct path: https://asulearn.appstate.edu/local/onboarding/redirect.php.';
