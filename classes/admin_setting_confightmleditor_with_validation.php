@@ -47,14 +47,18 @@ class admin_setting_confightmleditor_with_validation extends \admin_setting_conf
         $dd->loadHTML(mb_convert_encoding($text, 'HTML-ENTITIES', 'UTF-8'));
         // Get link tags - could be tracking clicks for more than one link.
         $links = $dd->getElementsByTagName('a');
-        $redirecturl = 'redirect.php';
+        $redirecturl = '/local/onboarding/redirect.php';
         foreach ($links as $link) {
             $href = html_entity_decode($link->getAttribute('href'));
-            // Start checking to make sure the redirect.php URL has the correct bits.
+            // Variables for all the bits we need to check for. 
             $urlstructure = parse_url($href);
             // If not using the redirect.php file do not need to check anything.
-            if (empty($urlstructure['path']) || !str_ends_with($urlstructure['path'], $redirecturl)) {
+            if (empty($urlstructure['path'])) {
                 continue;
+            }
+            // Check that path is /local/onboarding/redirect.php - needs to have the path or redirect won't work.
+            if (str_ends_with($urlstructure['path'], 'redirect.php') && $urlstructure['path'] !== $redirecturl) {
+                throw new \Exception(get_string('invalidpatherror', 'local_onboarding'));
             }
             // Check if there are BOTH query parameters.
             if (!isset($urlstructure['query'])) {
@@ -62,12 +66,11 @@ class admin_setting_confightmleditor_with_validation extends \admin_setting_conf
                 // If we have query params should be id=10&userid=%userid.
             }
             parse_str($urlstructure['query'], $result);
-            if (empty($result['id']) || empty($result['userid'])) {
-                if (empty($result['id'])) {
+            if (empty($result['id'])) {
                     throw new \Exception (get_string('missingiderror', 'local_onboarding'));
-                } else if (empty($result['userid'])) {
+            }
+            if (empty($result['userid'])) {
                     throw new \Exception (get_string('missinguseriderror', 'local_onboarding'));
-                }
             }
             // Check linkid is in redirect links table.
             if (!is_numeric($result['id']) || !$DB->record_exists('local_onboarding_redirect_links', ['id' => $result['id']])) {
