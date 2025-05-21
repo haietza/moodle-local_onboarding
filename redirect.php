@@ -25,7 +25,9 @@
 require_once("../../config.php");
 
 global $DB;
-$id = required_param('id', PARAM_ALPHANUM); // Link id from the table.
+$cache = cache::make('local_onboarding', 'onboardinglinkdata');
+
+$id = required_param('id', PARAM_INT); // Link id from the table.
 $userid = required_param('userid', PARAM_INT); // Userid wildcard.
 $userclicktime = time();
 
@@ -36,7 +38,23 @@ $existingclick = $DB->record_exists('local_onboarding_link_clicks', [
 ]);
 $validuser = $DB->record_exists('user', ['id' => $userid]);
 // Get record so we can get full url to redirect.
-$redirectlinkrecord = $DB->get_record('local_onboarding_redirect_links', ['id'  => $id]);
+
+// Check cache for redirectlink before we try to look it up directly.
+$key = $id;
+$data = $cache->get($key);
+
+if ($data === false) {
+    $redirectlinkrecord = $DB->get_record('local_onboarding_redirect_links', ['id'  => $id]);
+    // Just to be safe, don't want to cache empty record, should not get to this point bc of form validation but just to be extra safe. 
+    if ($redirectlinkrecord) {
+        $data = $redirectlinkrecord;
+        $cache->set($key, $data);
+    } else {
+        throw new \Exception(get_string('invalidlinkrecord', 'local_onboarding'));
+    }
+} else {
+    $redirectlinkrecord = $data;
+}
 
 // Only log the click if the user hasn't already clicked it and userid is valid.
 if (!$existingclick && $validuser) {
