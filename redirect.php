@@ -45,7 +45,7 @@ $data = $cache->get($key);
 
 if ($data === false) {
     $redirectlinkrecord = $DB->get_record('local_onboarding_redirect_links', ['id'  => $id]);
-    // Just to be safe, don't want to cache empty record, should not get to this point bc of form validation but just to be extra safe. 
+    // Just to be safe, don't want to cache empty record, should not get to this point bc of form validation but just to be extra safe.
     if ($redirectlinkrecord) {
         $data = $redirectlinkrecord;
         $cache->set($key, $data);
