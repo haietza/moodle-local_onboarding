@@ -51,7 +51,7 @@ class admin_setting_confightmleditor_with_validation extends \admin_setting_conf
         $site = parse_url($CFG->wwwroot);
         foreach ($links as $link) {
             $href = html_entity_decode($link->getAttribute('href'));
-            // Variables for all the bits we need to check for. 
+            // Variables for all the bits we need to check for.
             $urlstructure = parse_url($href);
             // If not using the redirect.php file do not need to check anything.
             if (empty($urlstructure['path'])) {
