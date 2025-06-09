@@ -26,11 +26,11 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Onboarding notifications';
 $string['welcometeacher'] = 'New teacher message';
-$string['welcometeacher_desc'] = 'Enter the content for the message to be sent to new teachers. The wildcards %sitename%, %userfirstname% and %userid% can be used. Links provided in emails can be tracked by changing the link url to https://asulearn.appstate.edu/local/onboarding/redirect.php?id=linkid&userid=%userid% where linkid is the id of the onboarding link the the local_onboarding_redirect_links table.';
+$string['welcometeacher_desc'] = "Enter the content for the message to be sent to new teachers. The wildcards %sitename%, %userfirstname% and %userid% can be used. Links provided in emails can be tracked by changing the link url to $CFG->wwwroot/local/onboarding/redirect.php?id=linkid&userid=%userid% where linkid is the id of the onboarding link the the local_onboarding_redirect_links table.";
 $string['welcomestudent'] = 'New student message';
-$string['welcomestudent_desc'] = 'Enter the content for the message to be sent to new students. The wildcards %sitename%, %userfirstname% and %userid% can be used. Links provided in emails can be tracked by changing the link url to https://asulearn.appstate.edu/local/onboarding/redirect.php?id=linkid&userid=%userid% where linkid is the id of the onboarding link the the local_onboarding_redirect_links table.';
+$string['welcomestudent_desc'] = "Enter the content for the message to be sent to new students. The wildcards %sitename%, %userfirstname% and %userid% can be used. Links provided in emails can be tracked by changing the link url to $CFG->wwwroot/local/onboarding/redirect.php?id=linkid&userid=%userid% where linkid is the id of the onboarding link the the local_onboarding_redirect_links table.";
 $string['lowuseteacher'] = 'Low use teacher message';
-$string['lowuseteacher_desc'] = 'Enter the content for the message to be sent to low use teachers. The wildcards %sitename%, %userfirstname% and %userid% can be used. Links provided in emails can be tracked by changing the link url to https://asulearn.appstate.edu/local/onboarding/redirect.php?id=linkid&userid=%userid% where linkid is the id of the onboarding link the the local_onboarding_redirect_links table.';
+$string['lowuseteacher_desc'] = "Enter the content for the message to be sent to low use teachers. The wildcards %sitename%, %userfirstname% and %userid% can be used. Links provided in emails can be tracked by changing the link url to $CFG->wwwroot/local/onboarding/redirect.php?id=linkid&userid=%userid% where linkid is the id of the onboarding link the the local_onboarding_redirect_links table.";
 $string['getroles'] = 'Get stored user roles';
 $string['sendonboardingnewmessages'] = 'Send onboarding new messages';
 $string['sendonboardinglowusemessages'] = 'Send onboarding low use messages';
@@ -45,4 +45,4 @@ $string['invalidlinkiderror'] = 'The id in the redirect url does not correspond 
 $string['useridparamerror'] = 'The userid parameter must be set to %userid%';
 $string['invalidlinkrecord'] = 'The linkid was not found in the local_onboarding_redirect_links table.';
 $string['cachedef_onboardinglinkdata'] = 'Onboarding redirect full link URLS from database.';
-$string['invalidpatherror'] = 'The redirect link must have the correct path: https://asulearn.appstate.edu/local/onboarding/redirect.php.';
+$string['invalidpatherror'] = "The redirect link must have the correct path: $CFG->wwwroot/local/onboarding/redirect.php.";
