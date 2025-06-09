@@ -52,6 +52,10 @@ Only one message is sent per user (versus one message per low use course).
 A scheduled task runs once a month to delete user records in the local_onboarding table
 that have not been assigned a role and are one year or older.
 
+### Tracking onboarding email link clicks ###
+
+The plugin has the ability to track links included as part of onboarding emails. This is done using a redirect link and two database tables, local_onboarding_redirect_links and local_onboarding_link_clicks. The table local_onboarding_redirect_links contains the full URL for the site you would like the user to end up at. The table local_onboarding_link_clicks keeps track of which userids have clicked on which links. The redirect link must be in the format https://yourmoodlesite.edu/local/onboarding/redirect.php?id=xx&userid=%userid% where yourmoodlesite.edu is your site's wwwroot, xx is the id in the local_onboarding_redirect_links table that contains the full URL of the site you wish to redirect the user to, and %userid% is a wildcard that will be used to send the user's id to the local_onboarding_link_clicks table and should be kept in the URL as %userid%. The tracking URL must be in this format in order for link tracking to work. If you do not wish to track links, regular links can be used in onboarding messages.
+
 ## License ##
 
 2023 Michelle Melton <meltonml@appstate.edu>
